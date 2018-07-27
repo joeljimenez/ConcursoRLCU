@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewBag.Title = "Jurado";
+    Layout = "~/Views/Shared/_LayoutPage_concurso.cshtml";
+}
+
+<div ng-controller="JuradoCtrl">
+    <header id="portfolio">
+        <a href="#"><img src="http://tennischel.ru/file/user.png" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+        <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+        <div class="w3-container">
+            <h1><b>@ViewBag.titulo</b></h1>
+            <div class="w3-section w3-bottombar w3-padding-16">
+                @* <button class="w3-button w3-teal" ng-click="guardar(formulario)"><i class="fa fa-floppy-o w3-margin-right"></i>Guardar</button>*@
+            </div>
+        </div>
+
+    </header>
+
+    <div class="w3-bar w3-black">
+        <button class="w3-bar-item w3-button {{a.color}}" name="nivel" ng-click="cambio_nivel(a)" ng-repeat="a in galeria | orderBy:'id'">{{'Nivel - ' + a.id}}</button>
+    </div>
+    <br />
+    <div class="w3-row-padding">
+
+        <style>
+            .gallery {
+                display: -webkit-flex;
+                display: flex;
+                -webkit-flex-wrap: wrap;
+                flex-wrap: wrap;
+            }
+
+                .gallery li {
+                    display: -webkit-flex;
+                    display: flex;
+                    
+                }
+        </style>
+
+        @*<ul class="gallery">
+        <li class="w3-col  l6 m6 w3-margin-bottom" ng-repeat="a in paginacion">
+            <div class="w3-display-container">
+                <div class="w3-display-topleft w3-black w3-padding">{{a.nombre}}</div>
+                <img src="{{'../GALERIA/'+a.idconcurso +'/'+a.idparticipante +'/'+ a.nombre + a.extencion}}" alt="House" style="width:100%;height:350px;">
+            </div>
+
+        </li>
+    </ul>*@
+        <div class="w3-col l6 m6 w3-margin-bottom" ng-repeat="a in paginacion">
+        <div class="w3-display-container" ng-dblclick="modal($index)" style="cursor:pointer">
+            <div class="w3-display-topleft w3-black w3-padding">{{a.nombre}}</div>
+            <img src="{{'../GALERIA/'+a.idconcurso +'/'+a.idparticipante +'/'+ a.nombre + a.extencion}}" alt="House" style="width:100%;height:350px;">
+        </div>
+        <footer class="w3-container w3-gray" style="color: #7d6c0b !important; margin: auto; display: block;text-align: left;font-size: 25px;background-color: #fffbfb!important;">
+            <a style="cursor:pointer" ng-click="edita_nivel(1,a)" ><i class="fa fa-thumbs-o-up"></i></a>
+            <a style="cursor:pointer" ng-click="edita_nivel(-1,a)" ng-if="a.nivel > 1"><i class="fa fa-thumbs-o-down"></i></a>
+
+            <a style="cursor:pointer; margin-left:10px" ng-click="info_imagen(a)"><i class="fa fa-info-circle"></i></a>
+        </footer>
+    </div>
+        <div class="w3-bar">
+            <a href="#" class="w3-button" ng-click="back()">&laquo;</a>
+            <a href="#" class="w3-button {{p.estado}}" ng-repeat="p in paginacionNav" ng-click="vista_imagen(p.num)">{{p.num}}</a>
+            <a href="#" class="w3-button" ng-click="next()">&raquo;</a>
+        </div>
+    </div>
+    <!-- Trigger/Open the Modal -->
+    <button onclick="document.getElementById('id01').style.display='block'"
+            class="w3-button">
+        Open Modal
+    </button>
+
+    <!-- The Modal -->
+    <div id="info" class="w3-modal" >
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+
+           
+           
+                <header class="w3-container w3-green">
+                    <span onclick="document.getElementById('info').style.display = 'none'"
+                          class="w3-button w3-display-topright">&times;</span>
+                    <h2>{{'Nombre: ' + imgInfo.nombre}}</h2>
+                </header>
+                <div class="w3-container">
+                    <div class="w3-card w3-col l3 m3  ">
+                        <img src="{{imgInfo.img}}" alt="House" style="width:100%">
+                    </div>
+                    <div class="w3-card  w3-col l9 m9">
+                        <table class="w3-table-all">
+                            <tr>
+                                <td class="w3-red">Formato:</td>
+                                <td>{{imgInfo.extencion}}</td>
+                            </tr>
+                            <tr>
+                                <td class="w3-red">Descripión:</td>
+                                <td>{{imgInfo.descripcion}}</td>
+                            </tr>
+                            <tr>
+                                <td class="w3-red">Tamaño:</td>
+                                <td>{{imgInfo.w + ' x '+ imgInfo.h}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                   
+                </div>
+                <footer class="w3-container w3-green">
+        <h2>Información</h2>
+    </footer>
+            
+            
+        </div>
+    </div>
+
+    <div id="id01" class="w3-modal w3-black">
+        <span class="w3-text-white w3-xxlarge w3-hover-text-grey w3-container w3-display-topright" onclick="closeModal()" style="cursor:pointer;position: fixed;background: red;z-index: 1;">×</span>
+        <div class="w3-modal-content">
+
+            <div class="w3-content" style="max-width:1200px">
+                <img class="mySlides" src="{{'../GALERIA/'+img_modal}}" style="width:100%">
+               
+                <div class="w3-row w3-black w3-center">
+                    <div class="w3-display-container">
+                        <p id="caption"></p>
+                        <span class="w3-display-left w3-btn" ng-click="modal_mov(-1)" style="position: fixed;background: rgba(102, 102, 102, 0.24);height: 100%;width: 10%;text-align: center;padding-top: 19%;font-size: 102px;">❮</span>
+                        <span class="w3-display-right w3-btn" ng-click="modal_mov(1)" style="position: fixed;background: rgba(102, 102, 102, 0.24);height: 100%;width: 10%;text-align: center;padding-top: 19%;font-size: 102px;">❯</span>
+                    </div>
+                    
+                </div> <!-- End row -->
+            </div> <!-- End w3-content -->
+
+        </div> <!-- End modal content -->
+
+    </div> <!-- End modal -->
+
+
+</div>
+
+<script>
+    function closeModal() {
+        document.getElementById('id01').style.display = "none";
+    }
+
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    //function plusDivs(n) {
+    //    showDivs(slideIndex += n);
+    //}
+
+    //function currentDiv(n) {
+    //    showDivs(slideIndex = n);
+    //}
+
+    //function showDivs(n) {
+    //    var i;
+    //    var x = document.getElementsByClassName("mySlides");
+    //    var dots = document.getElementsByClassName("demo");
+    //    var captionText = document.getElementById("caption");
+    //    if (n > x.length) { slideIndex = 1 }
+    //    if (n < 1) { slideIndex = x.length }
+    //    for (i = 0; i < x.length; i++) {
+    //        x[i].style.display = "none";
+    //    }
+    //    for (i = 0; i < dots.length; i++) {
+    //        dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+
+    //    }
+    //    x[slideIndex - 1].style.display = "block";
+    //    dots[slideIndex - 1].className += " w3-opacity-off";
+    //    captionText.innerHTML = dots[slideIndex - 1].alt;
+    //}
+</script>

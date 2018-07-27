@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_LayoutPage_concurso.cshtml";
+}
+
+<div ng-controller="PerfilCtrl">
+    <header id="portfolio">
+        <a href="#"><img src="http://tennischel.ru/file/user.png" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+        <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+        <div class="w3-container">
+            <h1><b>MI PERFIL</b></h1>
+            <div class="w3-section w3-bottombar w3-padding-16">
+                @*<span class="w3-margin-right">|</span>*@
+                @*<button class="w3-button w3-black">ALL</button>*@
+                <button class="w3-button w3-teal" ng-click="guardar(formulario)"><i class="fa fa-floppy-o w3-margin-right"></i>Guardar</button>
+                @*<button class="w3-button w3-white w3-hide-small"><i class="fa fa-photo w3-margin-right"></i>Photos</button>
+                <button class="w3-button w3-white w3-hide-small"><i class="fa fa-map-pin w3-margin-right"></i>Art</button>*@
+            </div>
+        </div>
+    </header>
+    <div class="w3-panel w3-black">
+        <p><small> Para poder subir tus fotografías debes completar este formulario de lo contrario no podrás entrar a tu portafolio.  </small></p>
+        <p><small> Para fazer upload de suas fotos, você deve preencher este formulário caso contrário você não pode entrar em seu portfólio. </small></p>
+    </div> 
+    <div class="w3-row-padding">
+        <div class="w3-col w3-container m4">
+            <label>Numero de identidad</label>
+            <input class="w3-input" type="text" ng-model="formulario.cedula" maxlength="50">
+        </div>
+        <div class="w3-col w3-container m4">
+            <label>Nombre</label>
+            <input class="w3-input" type="text" ng-model="formulario.nombre" maxlength="50">
+        </div>
+        <div class="w3-col w3-container m4">
+            <label>Apellido</label>
+            <input class="w3-input" type="text" ng-model="formulario.apellido" maxlength="50">
+        </div>
+    </div>
+    <div class="w3-row-padding">
+
+        <div class="w3-col w3-container s2">
+            <label>edad</label>
+            <input class="w3-input" type="number" ng-model="formulario.edad" min="0">
+        </div>
+        <div class="w3-col w3-container s4 m4">
+            <label>Sexo</label>
+            <select class="w3-input"
+                    ng-model="formulario.idsexo"
+                    ng-options="a.idsexo as a.nombre  for a in sexo|orderBy:['nombre']">
+                <option value="">-Selectcione sexo-</option>
+            </select> 
+        </div>
+        <div class="w3-col w3-container s6 m4">
+            <label>Fecha de Nacimiento</label>
+            <input class="w3-input" type="date" ng-model="formulario.fecha" ng-change="fecha(formulario.fecha)">
+           
+        </div>
+
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col w3-container m4">
+          
+                <label>País</label>
+                <select class="w3-input" 
+                        ng-model="formulario.idpais"
+                        ng-options="a.idpais as a.nombre  for a in pais|orderBy:['nombre']"
+                        ng-change="Consulta_uni(formulario.idpais)">
+                    <option value="">-Selectcione Pais-</option>
+                </select> 
+        </div>
+        <div class="w3-col w3-container m8">
+            <label>Dirección residencial</label>
+            <input class="w3-input" type="text" ng-model="formulario.direccion" maxlength="150">
+        </div>
+
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col w3-container m6">
+            <label>Universidad</label>
+            <select class="w3-input"
+                    ng-model="formulario.iduniversidades"
+                    ng-options="a.iduniversidades as a.nombre  for a in universidades|orderBy:['nombre']">
+                <option value="">-Selectcione Universidad-</option>
+            </select> 
+        </div>
+
+
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col w3-container m3">
+            <label>telefono</label>
+            <input class="w3-input" type="text" ng-model="formulario.telofono" maxlength="15">
+        </div>
+        <div class="w3-col w3-container m3">
+            <label>Celular</label>
+            <input class="w3-input" type="text" ng-model="formulario.celular" maxlength="15">
+        </div>
+        <div class="w3-col w3-container m6">
+            <label>Correo</label>
+            <input class="w3-input" type="text" ng-model="formulario.email" maxlength="60">
+        </div>
+    </div>
+
+</div>
+
+
+

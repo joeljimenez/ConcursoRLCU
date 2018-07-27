@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage_concurso.cshtml";
+}
+
+<div ng-controller="PortafolioCtrl">
+    <header id="portfolio">
+        <a href="#"><img src="http://tennischel.ru/file/user.png" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+        <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+        <div class="w3-container">
+            <h1><b>MI PORTAFOLIO</b></h1>
+            <div class="w3-section w3-bottombar w3-padding-16">
+                <button class="w3-button w3-blue" ng-click="loadarchivo()"><i class="fa fa-upload w3-margin-right"></i>Guardar</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="w3-row-padding">
+        <div class="w3-col w3-container m4">
+            <label>Subir archivo:</label>
+            <div class="input-group">
+                <input type="file" id="inputFile" class="w3-input" accept=".jpg"  name='file' onchange="angular.element(this).scope().update_file(this)" />
+
+            </div>
+        </div>
+        <div class="w3-col w3-container m8">
+            <label>Carga de Fotografia</label>
+            <div class="w3-gray ">
+
+                <div class="w3-container w3-blue w3-padding w3-center" style="width:{{carga}}%">{{carga}}%</div>
+            </div>
+        </div>
+      
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col w3-container m4">
+
+            <label>Categoria</label>
+            <select class="w3-input"
+                    ng-model="info.idcategoria"
+                    ng-options="a.idcategoria as a.nombre  for a in categorias|orderBy:['nombre']"
+                    ng-change="Consulta_uni(formulario.idpais)">
+                <option value="">-Selectcione la categoria-</option>
+            </select>
+        </div>
+        <div class="w3-col w3-container m8">
+            <label>Nombre</label>
+            <input class="w3-input" type="text" ng-model="info.nombre" maxlength="60">
+        </div>
+
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col w3-container m12">
+            <label>Descripcion</label>
+            <textarea class="w3-input" ng-model="info.descripcion" maxlength="200"></textarea>
+        </div>
+    </div>
+    <!-- First Photo Grid-->
+    <div ng-repeat="a in galeria">
+        
+        <div class="w3-panel w3-center w3-blue">
+            <h2>{{a.nombre}}</h2>
+        </div>
+
+        <div class="w3-row-padding">
+
+            @*<div class="w3-third w3-card-4 w3-dark-grey w3-margin-bottom"  ng-repeat="b in a.data">
+
+                <div class="w3-container w3-center">
+                    <h3>{{b.nombre}}</h3>
+                    <img src="../GALERIA/{{b.idconcurso +'/'+b.idparticipante +'/'+ b.nombre + b.extencion}}" alt="Avatar" style="width:80%;height: 350px;">
+                    <h5>{{b.descripcion}}</h5>
+
+                   
+                    <button class="w3-button w3-blue w3-hover-gray" onclick="document.getElementById('edit').style.display = 'block'" ng-click="editar(b)"><i class="fa fa-pencil w3-margin-right"></i>Editar</button>
+                    <button class="w3-button w3-blue w3-hover-red" onclick="document.getElementById('delete').style.display = 'block'" ng-click="eliminar(b)"><i class="fa fa-trash w3-margin-right" ¿></i>Eliminar</button>
+                </div>
+
+            </div>*@
+
+
+            <div class="w3-third w3-margin-bottom" ng-repeat="b in a.data">
+                <div class="w3-container">
+                    <img src="../GALERIA/{{b.idconcurso +'/'+b.idparticipante +'/'+ b.nombre + b.extencion}}" style="width:100%;height: 350px;" class="w3-hover-opacity">
+                    <div class="w3-container w3-white">
+                        <h3 class="w3-center ">{{b.nombre}}</h3>
+                      
+                        <p>{{b.descripcion}}</p>
+                    </div>
+                </div>
+                <footer class="w3-container  w3-center ">
+
+                    <button class="w3-button w3-blue w3-hover-gray" onclick="document.getElementById('edit').style.display = 'block'" ng-click="editar(b)"><i class="fa fa-pencil w3-margin-right"></i>Editar</button>
+                    <button class="w3-button w3-blue w3-hover-red"  onclick="document.getElementById('delete').style.display = 'block'" ng-click="eliminar(b)"><i class="fa fa-trash w3-margin-right" ¿></i>Eliminar</button>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+    
+
+
+    <!-- El Modal Editar -->
+    <div id="edit" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container w3-blue">
+                <h1>Editar {{edit_foto.nombre}} </h1>
+            </div>
+
+            <div class="w3-container">
+                <br /><br />
+                <span onclick="document.getElementById('edit').style.display = 'none'" class="w3-button w3-display-topright">&times;</span>
+                <div class="w3-row-padding">
+                    <div class="w3-col w3-container m8">
+                        <label>Nombre</label>
+                        <input class="w3-input" type="text" ng-model="edit_foto.nombre2" maxlength="60">
+                    </div>
+                </div>
+                <div class="w3-row-padding">
+                    <div class="w3-col w3-container m12">
+                        <label>Descripcion</label>
+                        <textarea class="w3-input" ng-model="edit_foto.descripcion" maxlength="200"></textarea>
+                    </div>
+                </div>
+                <br /><br />
+            </div>
+
+            <footer class="w3-container ">
+
+                <button class="w3-button w3-blue w3-hover-gray" ng-click="guardar(edit_foto)"><i class="fa fa-floppy-o w3-margin-right"></i>Guardar</button>
+                <button class="w3-button w3-blue w3-hover-red" onclick="document.getElementById('edit').style.display = 'none'"><i class="fa fa-ban w3-margin-right"></i>Cancelar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- El Modal Eliminar -->
+    <div id="delete" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container w3-blue">
+                <h1>Eliminar {{edit_foto.nombre2}} </h1>
+            </div>
+
+            <div class="w3-container">
+                <br /><br />
+                <span onclick="document.getElementById('delete').style.display = 'none'" class="w3-button w3-display-topright">&times;</span>
+                <p>Desea eliminar esta foto...</p>
+                <br /><br />
+            </div>
+
+            <footer class="w3-container">
+
+                <button class="w3-button w3-blue w3-hover-gray" ng-click="guardar(edit_foto)"><i class="fa fa-check w3-margin-right"></i>Confirmar</button>
+                <button class="w3-button w3-blue w3-hover-red" onclick="document.getElementById('delete').style.display = 'none'"><i class="fa fa-ban w3-margin-right"></i>Cancelar</button>
+               
+            </footer>
+        </div>
+    </div>
+</div>
